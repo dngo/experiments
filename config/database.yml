@@ -1,0 +1,23 @@
+development:
+  adapter: mysql2
+  username: root
+  database: demo
+  host: localhost
+
+test: &test
+  adapter: mysql2
+  username: root
+  database: demo_test
+  host: localhost
+
+production:
+  adapter: mysql2
+  username: david
+  password: password
+  database: demo
+  host: localhost
+  reconnect: true
+  # collation: utf8_bin
+
+#cucumber:
+#  <<: *test
