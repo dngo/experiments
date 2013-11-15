@@ -36,6 +36,11 @@ class Board
     end
   end
 
+  #todo make sure move is valid
+  def move(from, to)
+    self.position[to] = position[from]
+    self.position[from] = 0
+  end
 
   def to_ascii
     ascii = ""
