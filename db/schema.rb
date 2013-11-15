@@ -14,11 +14,18 @@
 ActiveRecord::Schema.define(version: 20130809163659) do
 
   create_table "games", force: true do |t|
+    t.string   "white"
+    t.string   "black"
+    t.string   "moves"
+    t.string   "result"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|
+    t.string   "login"
+    t.string   "name"
+    t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

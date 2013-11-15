@@ -1,20 +1,20 @@
 development:
   adapter: mysql2
   username: root
-  database: demo
+  database: chess_development
   host: localhost
 
 test: &test
   adapter: mysql2
   username: root
-  database: demo_test
+  database: chess_test
   host: localhost
 
 production:
   adapter: mysql2
   username: david
   password: password
-  database: demo
+  database: chess
   host: localhost
   reconnect: true
   # collation: utf8_bin
