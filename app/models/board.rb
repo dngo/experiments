@@ -29,6 +29,9 @@ class Board
     end
   end
 
+  def at(position)
+  end
+
   def pieces
     position.inject({}) do |memo, attr|
       memo[attr.first] = attr.last if attr.last.present?
@@ -42,7 +45,7 @@ class Board
     self.position[from] = 0
   end
 
-  def to_ascii
+  def to_s
     ascii = ""
     position.each_with_index do |square, index|
       ascii << if square.last.nil? 
@@ -51,7 +54,7 @@ class Board
          "#{square.last}"
       end
       ascii << if (index + 1) % 8 == 0  
-        "\n                                "
+        "\n                              "
       else
         " "
       end

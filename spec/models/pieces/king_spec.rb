@@ -14,11 +14,11 @@ describe King do
     @piece.position.should eql(:a1)
   end
 
-  it "#to_ascii" do
-    @piece.to_ascii.should eql "K"
+  it "#to_s" do
+    @piece.to_s.should eql "K"
 
     @piece = King.new(:color => :black, :position => :a1)
-    @piece.to_ascii.should eql "k"
+    @piece.to_s.should eql "k"
   end
 
 end

@@ -24,6 +24,8 @@ group :test do
   gem 'timecop'
   gem 'vcr'
   gem 'webmock'
+  gem 'ZenTest'
+  gem 'autotest-rails'
 end
 
 gem 'debugger', group: [:development, :test]

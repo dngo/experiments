@@ -9,7 +9,7 @@ class Piece
     end
   end
 
-  def to_ascii
+  def to_s
     color == :white ? self.class::SYM : self.class::SYM.downcase
   end
 
