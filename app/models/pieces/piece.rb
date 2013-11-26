@@ -1,12 +1,15 @@
 class Piece
-  attr_accessor :color, :position
-  ATTRIBUTE_KEYS = %w(color position)
+  include Movement
+
+  attr_accessor :color, :square
+  ATTRIBUTE_KEYS = %w(color square)
 
   def initialize(*attributes)
     options = attributes.extract_options!.stringify_keys
     ATTRIBUTE_KEYS.each do |key|
       self.send("#{key}=", options[key])
     end
+    self.square = Square.new options["square"] unless square.is_a?(Square)
   end
 
   def to_s

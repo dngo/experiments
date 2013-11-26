@@ -1,5 +1,5 @@
 class Board
-  attr_accessor :position
+  attr_accessor :piece_list
 
   STARTING_POSITION = %w(r n b q k b n r
                          p p p p p p p p
@@ -22,18 +22,19 @@ class Board
   #def initialize(*attributes)
   #options = attributes.extract_options!.stringify_keys
   def initialize
-    self.position = {}
+    self.piece_list = {}
     SQUARES.each_with_index do |square, index|
       piece = STARTING_POSITION[index]
-      position[square] = piece == "0" ? nil : piece 
+      piece_list[square] = piece unless piece == "0"
     end
   end
 
-  def at(position)
+  def at(square)
+    piece_list[square]
   end
 
   def pieces
-    position.inject({}) do |memo, attr|
+    piece_list.inject({}) do |memo, attr|
       memo[attr.first] = attr.last if attr.last.present?
       memo
     end
@@ -41,24 +42,40 @@ class Board
 
   #todo make sure move is valid
   def move(from, to)
-    self.position[to] = position[from]
-    self.position[from] = 0
+    self.piece_list[to] = piece_list[from]
+    self.piece_list.delete(from)
   end
 
   def to_s
-    ascii = ""
-    position.each_with_index do |square, index|
-      ascii << if square.last.nil? 
+    string = "\n    "
+    SQUARES.each_with_index do |square, index|
+      string << if piece_list[square].nil? 
          "0"
       else
-         "#{square.last}"
+         piece_list[square]
       end
-      ascii << if (index + 1) % 8 == 0  
-        "\n                              "
+      string << if (index + 1) % 8 == 0  
+        "\n    "
       else
         " "
       end
     end
-    ascii
+    string
   end
+
 end
+
+#  @bitboards[WHITE_PAWNS]   = 0b0000000000000000000000000000000000000000000000001111111100000000
+#  @bitboards[WHITE_ROOKS]   = 0b0000000000000000000000000000000000000000000000000000000010000001
+#  @bitboards[WHITE_KNIGHTS] = 0b0000000000000000000000000000000000000000000000000000000001000010
+#  @bitboards[WHITE_BISHOPS] = 0b0000000000000000000000000000000000000000000000000000000000100100
+#  @bitboards[WHITE_QUEENS]  = 0b0000000000000000000000000000000000000000000000000000000000001000
+#  @bitboards[WHITE_KING]    = 0b0000000000000000000000000000000000000000000000000000000000010000
+#  @bitboards[BLACK_PAWNS]   = 0b0000000011111111000000000000000000000000000000000000000000000000
+#  @bitboards[BLACK_ROOKS]   = 0b1000000100000000000000000000000000000000000000000000000000000000
+#  @bitboards[BLACK_KNIGHTS] = 0b0100001000000000000000000000000000000000000000000000000000000000
+#  @bitboards[BLACK_BISHOPS] = 0b0010010000000000000000000000000000000000000000000000000000000000
+#  @bitboards[BLACK_QUEENS]  = 0b0000100000000000000000000000000000000000000000000000000000000000
+#  @bitboards[BLACK_KING]    = 0b0001000000000000000000000000000000000000000000000000000000000000
+#  @bitboards[ENPASSANT]     = 0
+#  @bitboards[CAN_CASTLE]    = 0x000F # 1111
