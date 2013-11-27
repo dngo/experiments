@@ -4,15 +4,8 @@ module Movement
     cattr_accessor :legal_moves, :limit
     self.limit = options[:limit]
 
-    if args.include?(:row_column)
-      include RowColumn
-      RowColumn.send :initialize
-    end
-
-    if args.include?(:diagonal)
-      include Diagonal
-      Diagonal.send :initialize
-    end
+    include RowColumn if args.include?(:row_column)
+    include Diagonal if args.include?(:diagonal)
 
     #include InstanceMethods
   end
