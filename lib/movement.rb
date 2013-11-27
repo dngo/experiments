@@ -2,7 +2,6 @@ module Movement
   def acts_as_moveable(*args)
     options = args.extract_options!
     cattr_accessor :legal_moves, :limit
-    self.legal_moves = [] 
     self.limit = options[:limit]
 
     if args.include?(:row_column)
@@ -52,7 +51,7 @@ module Diagonal
       while next_square.valid?
         squares << next_square.coordinates
         next_square = next_square.send(dir)
-        break if limit
+        break if self.limit
       end
       squares
     end
