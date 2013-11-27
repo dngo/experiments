@@ -36,63 +36,27 @@ module RowColumn
   def initialize(*attributes)
     super
     self.legal_moves << (row_squares + column_squares)
-    self.legal_moves.flatten!.map!(&:to_sym)
+    self.legal_moves.flatten!
     self.legal_moves.delete square.coordinates #piece's current coordinate is not a legal move
   end
 end
 
 module Diagonal
-  def northeast_squares
-    squares = []
-    next_square = square
-    while true
-      next_square = Square.new "#{next_square.column.next}#{next_square.row.pred}"
-      squares << next_square.coordinates
-      break if next_square.column == "h" || next_square.row == 1
+  def diagonal_squares
+    %w(nw ne se sw).inject([]) do |squares, dir|
+      next_square = square.send(dir)
+      while next_square.valid?
+        squares << next_square.coordinates
+        next_square = next_square.send(dir)
+      end
+      squares
     end
-    squares
-  end
-
-  def northwest_squares
-    squares = []
-    next_square = square
-    while true
-      column = Board::COLUMNS.at((Board::COLUMNS.rindex(next_square.column) - 1))
-      next_square = Square.new "#{column}#{next_square.row.pred}"
-      squares << next_square.coordinates
-      break if next_square.column == "a" || next_square.row == 1
-    end
-    squares
-  end
-
-  def southwest_squares
-    squares = []
-    next_square = square
-    while true
-      column = Board::COLUMNS.at((Board::COLUMNS.rindex(next_square.column) - 1))
-      next_square = Square.new "#{column}#{next_square.row.next}"
-      squares << next_square.coordinates
-      break if next_square.column == "a" || next_square.row == 8
-    end
-    squares
-  end
-
-  def southeast_squares
-    squares = []
-    next_square = square
-    while true
-      next_square = Square.new "#{next_square.column.next}#{next_square.row.next}"
-      squares << next_square.coordinates
-      break if next_square.column == "h" || next_square.row == 8
-    end
-    squares
   end
 
   def initialize(*attributes)
     super
-    self.legal_moves << (northeast_squares + southwest_squares + northwest_squares + southeast_squares)
-    self.legal_moves.flatten!.map!(&:to_sym)
-    self.legal_moves.delete square.coordinates #piece's current coordinate is not a legal move
+    self.legal_moves << diagonal_squares
+    self.legal_moves.flatten!
   end
 end
 

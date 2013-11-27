@@ -63,7 +63,6 @@ class Board
     end
     string
   end
-
 end
 
 #  @bitboards[WHITE_PAWNS]   = 0b0000000000000000000000000000000000000000000000001111111100000000
