@@ -49,8 +49,12 @@ class Square
     Square.new "#{previous_column}#{row}"
   end
 
+  #return an arbitary invalid column if we are at the first column
+  #so it doesn't go to the end of the string
   def previous_column
-    Board::COLUMNS.at((Board::COLUMNS.rindex(column) - 1))
+    return "z" if column == "a"
+    index = Board::COLUMNS.index(column)
+    Board::COLUMNS.at(index - 1)
   end
 
 end

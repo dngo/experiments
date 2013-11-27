@@ -25,19 +25,21 @@ module Movement
 end
 
 module RowColumn
-  def row_squares
-    ('a'..'h').inject([]){ |sum, column| sum << "#{column}#{square.row}" }
-  end
-
-  def column_squares
-    (1..8).inject([]){ |sum, row| sum << "#{square.column}#{row}" }
+  def row_column_squares
+    %w(n e s w).inject([]) do |squares, dir|
+      next_square = square.send(dir)
+      while next_square.valid?
+        squares << next_square.coordinates
+        next_square = next_square.send(dir)
+      end
+      squares
+    end
   end
 
   def initialize(*attributes)
     super
-    self.legal_moves << (row_squares + column_squares)
+    self.legal_moves << row_column_squares
     self.legal_moves.flatten!
-    self.legal_moves.delete square.coordinates #piece's current coordinate is not a legal move
   end
 end
 
