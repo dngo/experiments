@@ -10,7 +10,7 @@ class Square
   end
 
   def row
-    coordinates.to_s.last
+    coordinates.to_s.last.to_i
   end
 
 end

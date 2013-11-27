@@ -1,6 +1,7 @@
 class Board
   attr_accessor :piece_list
 
+  COLUMNS = "abcdefgh"
   STARTING_POSITION = %w(r n b q k b n r
                          p p p p p p p p
                          0 0 0 0 0 0 0 0

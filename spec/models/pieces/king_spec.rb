@@ -31,8 +31,8 @@ describe King do
   end
 
   it "#possible_moves diagonally" do
-    #([:a8, :b7, :c6, :e4, :f3, :g2, :h1] - @piece.legal_moves).should be_empty #column
-    #([:a2, :b3, :c4, :e6, :f7, :g8] - @piece.legal_moves).should be_empty #row
+    ([:a8, :b7, :c6, :e4, :f3, :g2, :h1] - @piece.legal_moves).should be_empty #ne sw
+    ([:a2, :b3, :c4, :e6, :f7, :g8] - @piece.legal_moves).should be_empty #nw se
   end
 #
 #  it "#possible_moves only 1 square" do
