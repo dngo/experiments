@@ -14,6 +14,7 @@ class Square
   end
 
   def row
+    return 100 unless valid? #return something that will break so that north of -1 doesn't become 1
     coordinates.last.to_i
   end
 

@@ -1,5 +1,5 @@
 class Pawn < Piece
-  acts_as_moveable :forward, :limit => 1
+  acts_as_moveable :pawn_moves
 
   SYM = "P"
 end

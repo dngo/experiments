@@ -14,13 +14,6 @@ describe King do
     @piece.square.coordinates.should eql("d5")
   end
 
-  it "#to_s" do
-    @piece.to_s.should eql "K"
-
-    @piece = King.new(:color => :black, :square => "a1")
-    @piece.to_s.should eql "k"
-  end
-
   it "#possible_moves should not include current coordinates" do
     @piece.legal_moves.include?("d5").should be_false
   end

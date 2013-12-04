@@ -14,13 +14,6 @@ describe Pawn do
     @piece.square.coordinates.should eql("d2")
   end
 
-  it "#to_s" do
-    @piece.to_s.should eql "P"
-
-    @piece = Pawn.new(:color => :black, :square => "d7")
-    @piece.to_s.should eql "p"
-  end
-
   it "#possible_moves should not include current coordinates" do
     @piece.legal_moves.include?("d2").should be_false
   end
@@ -33,8 +26,11 @@ describe Pawn do
   end
 
   it "#possible_moves 1 squares forward when not at starting position" do
-    #@piece = Pawn.new(:color => :white, :square => "d6")
-    #( %w(d6 d5) - @piece.legal_moves).should be_empty #n
+    @piece = Pawn.new(:color => :white, :square => "d2", :has_moved => true)
+    @piece.legal_moves.should eql ["d3"]
+
+    @piece = Pawn.new(:color => :black, :square => "d7", :has_moved => true)
+    @piece.legal_moves.should eql ["d6"]
   end
 
   it "#captures diagonally"

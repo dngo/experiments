@@ -9,7 +9,8 @@ module Movement
 
     include RowColumn if args.include?(:row_column)
     include Diagonal if args.include?(:diagonal)
-    include Forward if args.include?(:forward)
+    include PawnMoves if args.include?(:pawn_moves)
+    include KnightMoves if args.include?(:knight_moves)
 
     include InstanceMethods
   end
@@ -32,6 +33,28 @@ module Movement
 
 end
 
+
+module KnightMoves
+  def possible_moves 
+    squares = []
+    squares << square.n.n.e
+    squares << square.n.n.w
+    squares << square.e.e.n
+    squares << square.e.e.s
+    squares << square.s.s.e
+    squares << square.s.s.w
+    squares << square.w.w.n
+    squares << square.w.w.s
+    squares.select{ |square| square.valid? }.map(&:coordinates)
+  end
+
+  def initialize(*attributes)
+    super
+    self.legal_moves << possible_moves
+    self.legal_moves.flatten!
+  end
+end
+
 module RowColumn
   def initialize(*attributes)
     super
@@ -48,10 +71,10 @@ module Diagonal
   end
 end
 
-module Forward
+module PawnMoves
   def initialize(*attributes)
     super
-    self.limit = 2 unless has_moved?
+    self.limit = has_moved? ? 1 : 2
     dir = color == :white ? %w(n) : %w(s)
     self.legal_moves << go_dir(dir)
     self.legal_moves.flatten!
