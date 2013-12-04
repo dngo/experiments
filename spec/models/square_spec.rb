@@ -21,15 +21,15 @@ describe Square do
   end
 
   it "#nw" do
-    @square.nw.coordinates.should eql "c4"
+    @square.nw.coordinates.should eql "c6"
   end
 
   it "#n" do
-    @square.n.coordinates.should eql "d4"
+    @square.n.coordinates.should eql "d6"
   end
 
   it "#ne" do
-    @square.ne.coordinates.should eql "e4"
+    @square.ne.coordinates.should eql "e6"
   end
 
   it "#e" do
@@ -37,15 +37,15 @@ describe Square do
   end
 
   it "#se" do
-    @square.se.coordinates.should eql "e6"
+    @square.se.coordinates.should eql "e4"
   end
 
   it "#s" do
-    @square.s.coordinates.should eql "d6"
+    @square.s.coordinates.should eql "d4"
   end
 
   it "#sw" do
-    @square.sw.coordinates.should eql "c6"
+    @square.sw.coordinates.should eql "c4"
   end
 
   it "#w" do

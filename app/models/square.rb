@@ -18,15 +18,15 @@ class Square
   end
 
   def nw
-    Square.new "#{previous_column}#{row.pred}"
+    Square.new "#{previous_column}#{row.next}"
   end
 
   def n
-    Square.new "#{column}#{row.pred}"
+    Square.new "#{column}#{row.next}"
   end
 
   def ne
-    Square.new "#{column.next}#{row.pred}"
+    Square.new "#{column.next}#{row.next}"
   end
 
   def e
@@ -34,15 +34,15 @@ class Square
   end
 
   def se
-    Square.new "#{column.next}#{row.next}"
+    Square.new "#{column.next}#{row.pred}"
   end
 
   def s
-    Square.new "#{column}#{row.next}"
+    Square.new "#{column}#{row.pred}"
   end
 
   def sw
-    Square.new "#{previous_column}#{row.next}"
+    Square.new "#{previous_column}#{row.pred}"
   end
 
   def w

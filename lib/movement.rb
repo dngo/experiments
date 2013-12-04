@@ -1,61 +1,61 @@
 module Movement
+  attr_accessor :legal_moves
+
   def acts_as_moveable(*args)
     options = args.extract_options!
-    cattr_accessor :legal_moves, :limit
-    self.limit = options[:limit]
+    cattr_accessor :limit
+
+    self.limit = options[:limit].present? ? options[:limit] : 7
 
     include RowColumn if args.include?(:row_column)
     include Diagonal if args.include?(:diagonal)
+    include Forward if args.include?(:forward)
 
-    #include InstanceMethods
+    include InstanceMethods
   end
 
   module InstanceMethods
-    #def move(string)
-      #write_attribute(self.class.yaffle_text_field, string.to_squawk)
-    #end
-  end
-end
-
-module RowColumn
-  def row_column_squares
-    %w(n e s w).inject([]) do |squares, dir|
-      next_square = square.send(dir)
-      while next_square.valid?
-        squares << next_square.coordinates
-        next_square = next_square.send(dir)
-        break if limit
+    def go_dir(directions)
+      all_squares = []
+      directions.each do |dir|
+        next_square = square.send(dir)
+        squares = []
+        while next_square.valid? && squares.count < limit
+          squares << next_square.coordinates
+          next_square = next_square.send(dir)
+        end
+        all_squares << squares
       end
-      squares
+      all_squares
     end
   end
 
+end
+
+module RowColumn
   def initialize(*attributes)
     super
-    self.legal_moves << row_column_squares
+    self.legal_moves << go_dir(%w(n e s w))
     self.legal_moves.flatten!
   end
 end
 
 module Diagonal
-  def diagonal_squares
-    %w(nw ne se sw).inject([]) do |squares, dir|
-      next_square = square.send(dir)
-      while next_square.valid?
-        squares << next_square.coordinates
-        next_square = next_square.send(dir)
-        break if self.limit
-      end
-      squares
-    end
-  end
-
   def initialize(*attributes)
     super
-    self.legal_moves << diagonal_squares
+    self.legal_moves << go_dir(%w(nw ne se sw))
     self.legal_moves.flatten!
   end
 end
 
+module Forward
+  def initialize(*attributes)
+    super
+    self.limit = 2 unless has_moved?
+    dir = color == :white ? %w(n) : %w(s)
+    self.legal_moves << go_dir(dir)
+    self.legal_moves.flatten!
+  end
+end
 
 Piece.extend Movement
