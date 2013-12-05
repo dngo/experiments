@@ -1,4 +1,4 @@
-don't generate legal moves on piece initialization
+don't generate legal moves on piece initialization for queen, rook, bishop, king
 king checking
 capturing
 

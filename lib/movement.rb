@@ -35,7 +35,7 @@ end
 
 
 module KnightMoves
-  def possible_moves 
+  def jumps 
     squares = []
     squares << square.n.n.e
     squares << square.n.n.w
@@ -48,10 +48,11 @@ module KnightMoves
     squares.select{ |square| square.valid? }.map(&:coordinates)
   end
 
-  def initialize(*attributes)
-    super
-    self.legal_moves << possible_moves
+  def moves
+    return legal_moves if legal_moves.present?
+    self.legal_moves = jumps
     self.legal_moves.flatten!
+    self.legal_moves
   end
 end
 
@@ -72,12 +73,13 @@ module Diagonal
 end
 
 module PawnMoves
-  def initialize(*attributes)
-    super
-    self.limit = has_moved? ? 1 : 2
-    dir = color == :white ? %w(n) : %w(s)
-    self.legal_moves << go_dir(dir)
+  def moves 
+    return legal_moves if legal_moves.present?
+    dir = color == :white ? "n" : "s"
+    self.legal_moves << square.send(dir).coordinates
+    self.legal_moves << square.send(dir).send(dir).coordinates unless has_moved?
     self.legal_moves.flatten!
+    self.legal_moves
   end
 end
 
