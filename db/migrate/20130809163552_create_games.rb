@@ -1,9 +1,9 @@
 class CreateGames < ActiveRecord::Migration
   def up
     create_table :games do |t|
-      t.string :white
-      t.string :black
-      t.string :moves
+      t.string :white_player_id
+      t.string :black_player_id
+      t.string :turn
       t.string :result
       t.timestamps
     end

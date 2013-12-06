@@ -7,7 +7,15 @@ When /^(?:|I )go to (.+)$/ do |page_name|
 end
 
 When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |text_or_id, selector|
-  selector.nil? ? click_button(text_or_id) : within(selector){ click_button(text_or_id) }
+  begin
+    selector.nil? ? click_button(text_or_id) : within(selector){ click_button(text_or_id) }
+  rescue Capybara::ElementNotFound => e
+    if selector
+      within(selector){ find(:css, '.btn', :visible => true, :text => text_or_id).click }
+    else
+      find(:css, '.btn', :visible => true, :text => text_or_id).click 
+    end
+  end
 end
 
 When /^(?:|I )click "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
@@ -76,41 +84,44 @@ end
 
 Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   if selector
-    within(selector) { page.html.should have_content(text) }
+    element = page.first(:css, selector)
+    element.should have_content(text)
   else
     page.html.should have_content(text)
   end
 end
 
-Then /^(?:|I )should see \/([^\/]*)\/(?: within "([^\"]*)")?$/ do |regexp, selector|
-  regexp = Regexp.new(regexp)
-  within(selector) do
-    if page.respond_to? :should
-      page.should have_xpath('//*', :text => regexp)
-    else
-      assert page.has_xpath?('//*', :text => regexp)
-    end
-  end
-end
-
 Then /^(?:|I )should not see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   if selector
-    within(selector) { page.should have_no_content(text) }
+    element = page.first(:css, selector)
+    element.should have_no_content(text)
   else
     page.should have_no_content(text)
   end
 end
 
-Then /^(?:|I )should not see \/([^\/]*)\/(?: within "([^\"]*)")?$/ do |regexp, selector|
-  regexp = Regexp.new(regexp)
-  within(selector) do
-    if page.respond_to? :should
-      page.should have_no_xpath('//*', :text => regexp)
-    else
-      assert page.has_no_xpath?('//*', :text => regexp)
-    end
-  end
-end
+#Then /^(?:|I )should see \/([^\/]*)\/(?: within "([^\"]*)")?$/ do |regexp, selector|
+#  regexp = Regexp.new(regexp)
+#  within(selector) do
+#    if page.respond_to? :should
+#      page.should have_xpath('//*', :text => regexp)
+#    else
+#      assert page.has_xpath?('//*', :text => regexp)
+#    end
+#  end
+#end
+#
+#
+#Then /^(?:|I )should not see \/([^\/]*)\/(?: within "([^\"]*)")?$/ do |regexp, selector|
+#  regexp = Regexp.new(regexp)
+#  within(selector) do
+#    if page.respond_to? :should
+#      page.should have_no_xpath('//*', :text => regexp)
+#    else
+#      assert page.has_no_xpath?('//*', :text => regexp)
+#    end
+#  end
+#end
 
 Then /^the "([^\"]*)" field(?: within "([^\"]*)")? should contain "([^\"]*)"$/ do |field, selector, value|
   within(selector) do
@@ -220,8 +231,9 @@ module TableStepsHelper
     end
 
     def normalize_content(content)
+      uuid_regex = /[a-z0-9]{8}[a-z0-9]{4}[a-z0-9]{4}[a-z0-9]{4}[a-z0-9]{12}/
       nbsp = 0xC2.chr + 0xA0.chr
-      content.gsub(/[\r\n\t]+/, ' ').gsub(nbsp, ' ').gsub(/ {2,}/, ' ').strip
+      content.gsub(/[\r\n\t]+/, ' ').gsub(nbsp, ' ').gsub(/ {2,}/, ' ').gsub(uuid_regex, "anyuuid").strip
     end
 
   end

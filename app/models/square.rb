@@ -53,7 +53,7 @@ class Square
   #return an arbitary invalid column if we are at the first column
   #so it doesn't go to the end of the string
   def previous_column
-    return "z" if column == "a"
+    return false if column == "a"
     index = Board::COLUMNS.index(column)
     Board::COLUMNS.at(index - 1)
   end

@@ -8,7 +8,7 @@ describe Board do
 
   it "#new sets up correctly" do
     @board.pieces.count.should eql(32)
-    @board.to_s.should eql %Q{
+    @board.to_ascii.should eql %Q{
     r n b q k b n r
     p p p p p p p p
     0 0 0 0 0 0 0 0
@@ -26,7 +26,7 @@ describe Board do
 
   it "#move" do
     @board.move("a2", "a3")
-    @board.to_s.should eql %Q{
+    @board.to_ascii.should eql %Q{
     r n b q k b n r
     p p p p p p p p
     0 0 0 0 0 0 0 0

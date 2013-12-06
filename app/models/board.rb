@@ -1,5 +1,6 @@
-class Board
+class Board < ActiveRecord::Base
   attr_accessor :piece_list
+  belongs_to :game
 
   COLUMNS = "abcdefgh"
   STARTING_POSITION = %w(r n b q k b n r
@@ -20,14 +21,13 @@ class Board
                a2 b2 c2 d2 e2 f2 g2 h2
                a1 b1 c1 d1 e1 f1 g1 h1)
 
-  #def initialize(*attributes)
-  #options = attributes.extract_options!.stringify_keys
-  def initialize
+  after_initialize do
     self.piece_list = {}
     SQUARES.each_with_index do |square, index|
       piece = STARTING_POSITION[index]
       piece_list[square] = piece unless piece == "0"
     end
+    self
   end
 
   def at(square)
@@ -47,7 +47,7 @@ class Board
     self.piece_list.delete(from)
   end
 
-  def to_s
+  def to_ascii
     string = "\n    "
     SQUARES.each_with_index do |square, index|
       string << if piece_list[square].nil? 

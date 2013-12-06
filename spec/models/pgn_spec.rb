@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe PGN do
+describe Pgn do
   before do
-    @pgn = PGN.new "#{Rails.root}/spec/test.pgn"
+    @pgn = Pgn.from_file "#{Rails.root}/spec/test.pgn"
   end
 
   it 'parses correctly' do
