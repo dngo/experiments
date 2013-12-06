@@ -9,7 +9,6 @@ class Piece
     ATTRIBUTE_KEYS.each do |key|
       self.send("#{key}=", options[key])
     end
-    self.legal_moves = []
     self.square = Square.new options["square"] unless square.is_a?(Square)
   end
 

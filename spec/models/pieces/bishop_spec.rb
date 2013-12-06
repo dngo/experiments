@@ -15,12 +15,16 @@ describe Bishop do
   end
 
   it "#possible_moves should not include current coordinates" do
-    @piece.legal_moves.include?("d5").should be_false
+    @piece.moves.include?("d5").should be_false
+  end
+
+  it "#has the right number of moves" do
+    @piece.moves.count.should eql(13)
   end
 
   it "#possible_moves diagonally" do
-    ( %w(a8 b7 c6 e4 f3 g2 h1) - @piece.legal_moves).should be_empty #ne sw
-    ( %w(a2 b3 c4 e6 f7 g8) - @piece.legal_moves).should be_empty #nw se
+    ( %w(a8 b7 c6 e4 f3 g2 h1) - @piece.moves).should be_empty #ne sw
+    ( %w(a2 b3 c4 e6 f7 g8) - @piece.moves).should be_empty #nw se
   end
 
 

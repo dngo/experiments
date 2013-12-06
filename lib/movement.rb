@@ -16,6 +16,14 @@ module Movement
   end
 
   module InstanceMethods
+    def moves
+      return legal_moves if legal_moves.present?
+      self.legal_moves = []
+      super
+      self.legal_moves.flatten!
+      legal_moves
+    end
+
     def go_dir(directions)
       all_squares = []
       directions.each do |dir|
@@ -49,37 +57,29 @@ module KnightMoves
   end
 
   def moves
-    return legal_moves if legal_moves.present?
     self.legal_moves = jumps
-    self.legal_moves.flatten!
-    self.legal_moves
   end
 end
 
 module RowColumn
-  def initialize(*attributes)
-    super
+  def moves
+    super if defined? super
     self.legal_moves << go_dir(%w(n e s w))
-    self.legal_moves.flatten!
   end
 end
 
 module Diagonal
-  def initialize(*attributes)
-    super
+  def moves
+    super if defined? super
     self.legal_moves << go_dir(%w(nw ne se sw))
-    self.legal_moves.flatten!
   end
 end
 
 module PawnMoves
   def moves 
-    return legal_moves if legal_moves.present?
     dir = color == :white ? "n" : "s"
     self.legal_moves << square.send(dir).coordinates
     self.legal_moves << square.send(dir).send(dir).coordinates unless has_moved?
-    self.legal_moves.flatten!
-    self.legal_moves
   end
 end
 
