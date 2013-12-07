@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20130809163660) do
 
   create_table "boards", force: true do |t|
     t.string   "moves"
+    t.string   "turn"
     t.string   "game_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -23,7 +24,6 @@ ActiveRecord::Schema.define(version: 20130809163660) do
   create_table "games", force: true do |t|
     t.string   "white_player_id"
     t.string   "black_player_id"
-    t.string   "turn"
     t.string   "result"
     t.datetime "created_at"
     t.datetime "updated_at"

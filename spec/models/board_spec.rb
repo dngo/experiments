@@ -21,7 +21,18 @@ describe Board do
   end
 
   it "#at" do
-    @board.at("a1").should eql('R')
+    piece = @board.at("a1")
+    piece.should be_a(Rook)
+    piece.color.should eql(:white)
+  end
+
+  it "cannot move from an empty square" do
+    expect{ @board.move("a3", "a4") }.to raise_error(NoPieceError)
+  end
+
+  it "#turn player can only move if it is their turn" do
+    @board.turn = :black
+    expect{ @board.move("a2", "a3") }.to raise_error(NotYourTurnError)
   end
 
   it "#move" do

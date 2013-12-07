@@ -10,9 +10,7 @@ describe Game do
 
   it "is valid" do
     @game.should be_valid
-
     bad_game = Game.new
     bad_game.should_not be_valid
   end
-
 end

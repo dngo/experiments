@@ -1,5 +1,8 @@
+include Exceptions
+
 class Board < ActiveRecord::Base
   attr_accessor :piece_list
+  validates_presence_of :turn
   belongs_to :game
 
   COLUMNS = "abcdefgh"
@@ -22,6 +25,7 @@ class Board < ActiveRecord::Base
                a1 b1 c1 d1 e1 f1 g1 h1)
 
   after_initialize do
+    self.turn ||= :white
     self.piece_list = {}
     SQUARES.each_with_index do |square, index|
       piece = STARTING_POSITION[index]
@@ -30,8 +34,10 @@ class Board < ActiveRecord::Base
     self
   end
 
-  def at(square)
-    piece_list[square]
+  def at(coordinates)
+    piece = Piece.from_ascii(piece_list[coordinates])
+    piece.square = Square.new(coordinates) if piece
+    piece
   end
 
   def pieces
@@ -43,6 +49,8 @@ class Board < ActiveRecord::Base
 
   #todo make sure move is valid
   def move(from, to)
+    raise NoPieceError.new("Attempted to move from an empty square") if at(from).nil?
+    raise NotYourTurnError.new("#{turn}'s turn") unless at(from).color == turn
     self.piece_list[to] = piece_list[from]
     self.piece_list.delete(from)
   end
