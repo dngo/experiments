@@ -4,9 +4,10 @@ describe Board do
 
   before :each do
     @board = Board.new
+    @board.setup
   end
 
-  it "#new sets up correctly" do
+  it "#setup pieces are all in starting position" do
     @board.pieces.count.should eql(32)
     @board.to_ascii.should eql %Q{
     r n b q k b n r
@@ -20,6 +21,14 @@ describe Board do
     }
   end
 
+  it "#place a piece" do
+    @board = Board.new
+    piece = King.new(:color => :white, :square => "d5")
+    @board.place(piece)
+    @board.at("d5").should eql(piece)
+    @board.to_ascii
+  end
+
   it "#at" do
     piece = @board.at("a1")
     piece.should be_a(Rook)
@@ -30,9 +39,9 @@ describe Board do
     expect{ @board.move("a3", "a4") }.to raise_error(NoPieceError)
   end
 
-  it "#turn player can only move if it is their turn" do
+  it "#player cannot move out of turn" do
     @board.turn = :black
-    expect{ @board.move("a2", "a3") }.to raise_error(NotYourTurnError)
+    expect{ @board.move("a2", "a3") }.to raise_error(NotPlayerTurnError)
   end
 
   it "#move" do

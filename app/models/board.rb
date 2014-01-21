@@ -23,19 +23,26 @@ class Board < ActiveRecord::Base
                a3 b3 c3 d3 e3 f3 g3 h3
                a2 b2 c2 d2 e2 f2 g2 h2
                a1 b1 c1 d1 e1 f1 g1 h1)
-
+  
   after_initialize do
     self.turn ||= :white
     self.piece_list = {}
+  end
+
+  def setup
     SQUARES.each_with_index do |square, index|
-      piece = STARTING_POSITION[index]
-      piece_list[square] = piece unless piece == "0"
+      piece = Piece.from_ascii(STARTING_POSITION[index])
+      piece_list[square] = piece if piece
     end
-    self
+  end
+
+  def place(piece)
+    raise ArgumentError.new("no coordinates for piece") if piece.square.nil?
+    piece_list[piece.square.coordinates] = piece
   end
 
   def at(coordinates)
-    piece = Piece.from_ascii(piece_list[coordinates])
+    piece = piece_list[coordinates]
     piece.square = Square.new(coordinates) if piece
     piece
   end
@@ -50,9 +57,10 @@ class Board < ActiveRecord::Base
   #todo make sure move is valid
   def move(from, to)
     raise NoPieceError.new("Attempted to move from an empty square") if at(from).nil?
-    raise NotYourTurnError.new("#{turn}'s turn") unless at(from).color == turn
+    raise NotPlayerTurnError.new("#{turn}'s turn") unless at(from).color == turn
     self.piece_list[to] = piece_list[from]
     self.piece_list.delete(from)
+    #toggle turn
   end
 
   def to_ascii
@@ -61,7 +69,7 @@ class Board < ActiveRecord::Base
       string << if piece_list[square].nil? 
          "0"
       else
-         piece_list[square]
+         piece_list[square].to_ascii
       end
       string << if (index + 1) % 8 == 0  
         "\n    "

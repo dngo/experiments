@@ -24,9 +24,4 @@ describe Knight do
     (@piece.moves - %w(a3 c3 d2) ).should be_empty
   end
 
-  it "is in check"
-  it "move is invalid if king is in check"
-  it "castles kingside"
-  it "castles queenside"
-
 end

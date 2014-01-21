@@ -76,7 +76,7 @@ module Diagonal
 end
 
 module PawnMoves
-  def moves 
+  def moves(board) 
     dir = color == :white ? "n" : "s"
     self.legal_moves << square.send(dir).coordinates
     self.legal_moves << square.send(dir).send(dir).coordinates unless has_moved?

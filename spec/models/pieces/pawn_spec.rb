@@ -33,7 +33,15 @@ describe Pawn do
     @piece.moves.should eql ["d6"]
   end
 
-  it "#captures diagonally"
+  it "#captures diagonally" do
+    @board = Board.new
+    @board.place @piece
+    @board.place Pawn.new(:color => :black, :square => "c3")
+    @board.place Pawn.new(:color => :black, :square => "e3")
+    @piece.moves(@board).should include("c3")
+    @piece.moves(@board).should include("e3")
+  end
+
   it "#possible_moves en passant"
   it "#promotion"
 end

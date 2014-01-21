@@ -36,4 +36,10 @@ describe King do
     ( %w(d4 e5 d6 c5 c4 e4 e6 c6) - @piece.moves).should be_empty #nw se
    end
 
+  it "is in check"
+  it "move is invalid if king is in check"
+  it "castles kingside"
+  it "castles queenside"
+
+
 end

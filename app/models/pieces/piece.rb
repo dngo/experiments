@@ -6,10 +6,11 @@ class Piece
 
   def initialize(*attributes)
     options = attributes.extract_options!.stringify_keys
-    ATTRIBUTE_KEYS.each do |key|
-      self.send("#{key}=", options[key])
+
+    if square = options.delete("square")
+      self.square = Square.new(square) unless square.is_a?(Square)
     end
-    self.square = Square.new options["square"] unless square.is_a?(Square)
+    ATTRIBUTE_KEYS.each { |key| self.send("#{key}=", options[key]) }
   end
 
   def has_moved?
@@ -47,6 +48,10 @@ class Piece
     else
       nil
     end
+  end
+
+  def to_ascii
+    color == :white ? self.class::SYM : self.class::SYM.downcase
   end
 
 end
