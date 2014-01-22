@@ -9,12 +9,12 @@ module Movement
   def self.get_moves(piece)
     moves = []
     piece.directions.each do |direction|
-      moves << go_direction(piece, direction)
+      moves << moves_by_direction(piece, direction)
     end
     moves.flatten
   end
 
-  def self.go_direction(piece, direction)
+  def self.moves_by_direction(piece, direction)
     moves = []
     next_square = piece.square.send(direction)
     while next_square.valid? && moves.count < piece.limit
