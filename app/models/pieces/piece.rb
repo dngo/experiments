@@ -1,11 +1,6 @@
 class Piece
-  include Movement
-
-  attr_accessor :color, :square, :has_moved
-  ATTRIBUTE_KEYS = %w(color has_moved)
   COLOR = {white: :white, black: :black}.freeze
-  PIECE_KEYS = {
-                  R: {class: 'Rook',   color: COLOR[:white]},
+  PIECE_KEYS = {  R: {class: 'Rook',   color: COLOR[:white]},
                   N: {class: 'Knight', color: COLOR[:white]},
                   B: {class: 'Bishop', color: COLOR[:white]},
                   Q: {class: 'Queen',  color: COLOR[:white]},
@@ -16,27 +11,19 @@ class Piece
                   b: {class: 'Bishop', color: COLOR[:black]},
                   q: {class: 'Queen',  color: COLOR[:black]},
                   k: {class: 'King',   color: COLOR[:black]},
-                  p: {class: 'Pawn',   color: COLOR[:black]}
-                }.freeze
+                  p: {class: 'Pawn',   color: COLOR[:black]}  }.freeze
 
-#  def initialize(args={})
-#    @color = args[:color]
-#    @square = args[:square]
-#    @has_moved = args.fech(:square, false)
-#    @movement = args[:movement]
-#  end
-#
-#  def moves
-#    movement.squares
-#  end
+  attr_accessor :color, :square, :has_moved, :moves
 
-  def initialize(*attributes)
-    options = attributes.extract_options!.stringify_keys
+  def initialize(args={})
+    @color = args[:color]
+    @square = args[:square]
+    self.square = args[:square]
+    @has_moved = args.fetch(:has_moved, false)
+  end
 
-    if square = options.delete("square")
-      self.square = Square.new(square) unless square.is_a?(Square)
-    end
-    ATTRIBUTE_KEYS.each { |key| self.send("#{key}=", options[key]) }
+  def moves
+    @moves ||= Movement.build(self)
   end
 
   def has_moved?
@@ -45,16 +32,17 @@ class Piece
 
   def self.from_ascii(letter)
     letter = letter.to_sym
-    begin 
     klass, color = PIECE_KEYS[letter][:class].constantize, PIECE_KEYS[letter][:color]
     klass.new(:color => color)
-    rescue
-      raise NotImplementedError, "#{letter} not implemented"
-    end
   end
 
   def to_ascii
     color == COLOR[:white] ? self.class::SYM : self.class::SYM.downcase
+  end
+
+  protected
+  def square=(square)
+    @square = square.is_a?(Square) ? square : Square.new(square)
   end
 
 end

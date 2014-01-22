@@ -1,5 +1,13 @@
 class King < Piece
-  acts_as_moveable :diagonal, :row_column, :limit => 1
-
   SYM = "K"
+  DIRECTIONS = %w(nw n ne e se s sw w)
+  LIMIT = 1
+
+  def directions
+    DIRECTIONS
+  end
+
+  def limit
+    LIMIT
+  end
 end

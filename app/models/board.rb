@@ -42,9 +42,7 @@ class Board < ActiveRecord::Base
   end
 
   def at(coordinates)
-    piece = piece_list[coordinates]
-    piece.square = Square.new(coordinates) if piece
-    piece
+    piece_list[coordinates]
   end
 
   def pieces

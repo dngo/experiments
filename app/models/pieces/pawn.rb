@@ -1,5 +1,15 @@
 class Pawn < Piece
-  acts_as_moveable :pawn_moves
-
   SYM = "P"
+
+  def directions
+    if color == :white
+      %w(n)
+    elsif color == :black
+      %w(s)
+    end
+  end
+
+  def limit
+    has_moved? ? 1 : 2
+  end
 end
