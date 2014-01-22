@@ -40,6 +40,14 @@ class Piece
     color == COLOR[:white] ? self.class::SYM : self.class::SYM.downcase
   end
 
+  def directions
+    raise NotImplementedError
+  end
+
+  def limit
+    raise NotImplementedError
+  end
+
   protected
   def square=(square)
     @square = square.is_a?(Square) ? square : Square.new(square)

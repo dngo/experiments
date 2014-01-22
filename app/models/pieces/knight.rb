@@ -15,11 +15,4 @@ class Knight < Piece
     @moves.select{ |square| square.valid? }.map(&:coordinates)
   end
 
-  def directions
-    raise NotImplementedError
-  end
-
-  def limit
-    raise NotImplementedError
-  end
 end
