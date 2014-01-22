@@ -3,6 +3,32 @@ class Piece
 
   attr_accessor :color, :square, :has_moved
   ATTRIBUTE_KEYS = %w(color has_moved)
+  COLOR = {white: :white, black: :black}.freeze
+  PIECE_KEYS = {
+                  R: {class: 'Rook',   color: COLOR[:white]},
+                  N: {class: 'Knight', color: COLOR[:white]},
+                  B: {class: 'Bishop', color: COLOR[:white]},
+                  Q: {class: 'Queen',  color: COLOR[:white]},
+                  K: {class: 'King',   color: COLOR[:white]},
+                  P: {class: 'Pawn',   color: COLOR[:white]},
+                  r: {class: 'Rook',   color: COLOR[:black]},
+                  n: {class: 'Knight', color: COLOR[:black]},
+                  b: {class: 'Bishop', color: COLOR[:black]},
+                  q: {class: 'Queen',  color: COLOR[:black]},
+                  k: {class: 'King',   color: COLOR[:black]},
+                  p: {class: 'Pawn',   color: COLOR[:black]}
+                }.freeze
+
+#  def initialize(args={})
+#    @color = args[:color]
+#    @square = args[:square]
+#    @has_moved = args.fech(:square, false)
+#    @movement = args[:movement]
+#  end
+#
+#  def moves
+#    movement.squares
+#  end
 
   def initialize(*attributes)
     options = attributes.extract_options!.stringify_keys
@@ -18,40 +44,17 @@ class Piece
   end
 
   def self.from_ascii(letter)
-    case letter
-    when "r"
-      Rook.new(:color => :black)
-    when "n"
-      Knight.new(:color => :black)
-    when "b"
-      Bishop.new(:color => :black)
-    when "q"
-      Queen.new(:color => :black)
-    when "k"
-      King.new(:color => :black)
-    when "p"
-      Pawn.new(:color => :black)
-    when "p"
-      Pawn.new(:color => :white)
-    when "R"
-      Rook.new(:color => :white)
-    when "N"
-      Knight.new(:color => :white)
-    when "B"
-      Bishop.new(:color => :white)
-    when "Q"
-      Queen.new(:color => :white)
-    when "K"
-      King.new(:color => :white)
-    when "P"
-      Pawn.new(:color => :white)
-    else
-      nil
+    letter = letter.to_sym
+    begin 
+    klass, color = PIECE_KEYS[letter][:class].constantize, PIECE_KEYS[letter][:color]
+    klass.new(:color => color)
+    rescue
+      raise NotImplementedError, "#{letter} not implemented"
     end
   end
 
   def to_ascii
-    color == :white ? self.class::SYM : self.class::SYM.downcase
+    color == COLOR[:white] ? self.class::SYM : self.class::SYM.downcase
   end
 
 end

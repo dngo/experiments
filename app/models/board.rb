@@ -25,13 +25,13 @@ class Board < ActiveRecord::Base
                a1 b1 c1 d1 e1 f1 g1 h1)
   
   after_initialize do
-    self.turn ||= :white
+    self.turn ||= Piece::COLOR[:white]
     self.piece_list = {}
   end
 
   def setup
     SQUARES.each_with_index do |square, index|
-      piece = Piece.from_ascii(STARTING_POSITION[index])
+      piece = Piece.from_ascii(STARTING_POSITION[index]) unless STARTING_POSITION[index] == "0"
       piece_list[square] = piece if piece
     end
   end

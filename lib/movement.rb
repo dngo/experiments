@@ -1,3 +1,17 @@
+#class Movement
+#  attr_accessor :squares
+#
+#  def initialize(squares)
+#    @squares = squares
+#  end
+#end
+#
+#module MoveFactory
+#  def self.build(config)
+#    Square.new
+#  end
+#end
+
 module Movement
   attr_accessor :legal_moves
 
