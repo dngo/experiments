@@ -23,7 +23,7 @@ class Piece
   end
 
   def moves
-    @moves ||= Movement.build(self)
+    @moves ||= DirectionalMovement.build(square, directions, limit)
   end
 
   def has_moved?

@@ -3,6 +3,7 @@ class Queen < Piece
   DIRECTIONS = %w(nw n ne e se s sw w)
   LIMIT = 8
 
+  protected
   def directions
     DIRECTIONS
   end
