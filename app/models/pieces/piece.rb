@@ -26,10 +26,6 @@ class Piece
     @moves ||= DirectionalMovement.build(square, directions, limit)
   end
 
-  def has_moved?
-    has_moved
-  end
-
   def self.from_ascii(letter)
     letter = letter.to_sym
     klass, color = PIECE_KEYS[letter][:class].constantize, PIECE_KEYS[letter][:color]
@@ -40,6 +36,7 @@ class Piece
     color == COLOR[:white] ? self.class::SYM : self.class::SYM.downcase
   end
 
+  private
   def directions
     raise NotImplementedError
   end
@@ -48,7 +45,10 @@ class Piece
     raise NotImplementedError
   end
 
-  protected
+  def has_moved?
+    has_moved
+  end
+
   def square=(square)
     @square = square.is_a?(Square) ? square : Square.new(square)
   end

@@ -3,7 +3,7 @@ class Bishop < Piece
   DIRECTIONS = %w(nw ne se sw)
   LIMIT = 8
 
-  protected
+  private
   def directions
     DIRECTIONS
   end

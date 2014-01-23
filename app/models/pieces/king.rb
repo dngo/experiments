@@ -3,7 +3,7 @@ class King < Piece
   DIRECTIONS = %w(nw n ne e se s sw w)
   LIMIT = 1
 
-  protected
+  private
   def directions
     DIRECTIONS
   end

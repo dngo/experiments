@@ -3,7 +3,7 @@ class Rook < Piece
   DIRECTIONS = %w(n e s w)
   LIMIT = 8
 
-  protected
+  private
   def directions
     DIRECTIONS
   end

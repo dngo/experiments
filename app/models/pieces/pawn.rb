@@ -1,7 +1,7 @@
 class Pawn < Piece
   SYM = "P"
 
-  protected
+  private
   def directions
     if color == :white
       %w(n)
